@@ -1,6 +1,8 @@
 MODEL:
   META_ARCHITECTURE: "GeneralizedRCNN"
-  WEIGHT: "catalog://Caffe2Detectron/COCO/35861795/e2e_mask_rcnn_R-101-FPN_1x" # "catalog://Caffe2Detectron/COCO/35858933/e2e_mask_rcnn_R-50-FPN_1x" 
+  WEIGHT: "maskrcnn_benchmark/data/datasets/cityscapes/checkpoints/coco2cityscapes_R-101-FPN.pkl"
+          #"catalog://Caffe2Detectron/COCO/35861795/e2e_mask_rcnn_R-101-FPN_1x" 
+          # "catalog://Caffe2Detectron/COCO/35858933/e2e_mask_rcnn_R-50-FPN_1x" 
   BACKBONE:
     CONV_BODY: "R-101-FPN" #"R-50-FPN"
   RESNETS:
@@ -20,7 +22,7 @@ MODEL:
     POOLER_SAMPLING_RATIO: 2
     FEATURE_EXTRACTOR: "FPN2MLPFeatureExtractor"
     PREDICTOR: "FPNPredictor"
-    NUM_CLASSES: 81
+    NUM_CLASSES: 9 #81
   ROI_MASK_HEAD:
     POOLER_SCALES: (0.25, 0.125, 0.0625, 0.03125)
     FEATURE_EXTRACTOR: "MaskRCNNFPNFeatureExtractor"
@@ -33,7 +35,7 @@ MODEL:
 DATASETS:
   TRAIN: ("cityscapes_fine_instanceonly_seg_train_cocostyle",)
   TEST: ("cityscapes_fine_instanceonly_seg_val_cocostyle",)
-  CONVERT: True
+  CONVERT: False #True
 DATALOADER:
   SIZE_DIVISIBILITY: 32
   NUM_WORKERS: 0

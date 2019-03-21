@@ -31,9 +31,10 @@ import numpy as np
 import os
 import sys
 
-import detectron.datasets.coco_to_cityscapes_id as cs
-from detectron.utils.io import load_object
-from detectron.utils.io import save_object
+import coco_to_cityscapes_id as cs
+from utils_io import load_object
+from utils_io import save_object
+import copy
 
 NUM_CS_CLS = 9
 NUM_COCO_CLS = 81
@@ -105,7 +106,8 @@ def convert_coco_blob_to_cityscapes_blob(coco_blob, convert_func):
 
 
 def remove_momentum(model_dict):
-    for k in model_dict['blobs'].keys():
+    all_keys = list(model_dict['blobs'].keys())
+    for k in all_keys:
         if k.endswith('_momentum'):
             del model_dict['blobs'][k]
 
