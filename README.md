@@ -37,6 +37,8 @@ In [tools/](maskrcnn_benckmark/tools/convert_coco_model_to_cityscapes.py) we cop
 
     python convert_coco_model_to_cityscapes.py --coco_model PATH_TO_PICKLE --output PATH_TO_CONVERTED_PICKLE
 
+<span style="color:red">TODO: When converting the model, try to keep the *traffic light* and *traffic sign* classes so that the top layer output is 11 classes</span>
+
 <!-- Note that when preparing the dataset, we have to convert the index of the same classes from different dataset so that they match. Also, since Cityscapes doesn't have instance level label of traffic light and traffic sign, we have to rely on COCO dataset (or BDD maybe?). -->
 
 ## Test on BDD100K dataset
