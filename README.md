@@ -5,26 +5,26 @@ The purpose of this repo is to add/modify the original code to train and test on
 
 ## Metrics
 The evaluation metrics are following original MaskRCNN paper and the original repo.
-1. Average Precision ($AP$)
+1. Average Precision (AP)
 2. AP<sub>50</sub>: the AP with IOU = 0.5
-3. $AP_{75}$: the AP with IOU = 0.75
-4. $AP_{S}$: the AP in small scale
-5. $AP_{M}$: the AP in median scale
-6. $AP_{L}$: the AP in large scale
+3. AP<sub>75</sub>: the AP with IOU = 0.75
+4. AP<sub>S</sub>: the AP in small scale objects
+5. AP<sub>M</sub>: the AP in median scale objects
+6. AP<sub>L</sub>: the AP in large scale objects
 
 ## Test COCO pretrained model on Cityscapes Dataset
 #### Bounding Box
-|   Backbone    | Train data | Test data      | EvalType | $AP$ | $AP_{50}$ | $AP_{75}$ | $AP_S$ | $AP_M$ | $AP_L$ |
-|:-------------:|------------|----------------|----------|------|-----------|-----------|--------|--------|--------|
-| ResNet50-FCN  | COCO       | Cityscapes val | Bbox     | 20.5 | 34.4      | 21.1      | 8.3    | 22.5   | 35.1   |
-| ResNet101-FCN | COCO       | Cityscapes val | Bbox     | 21.5 | 35.2      | 21.9      | 8.09   | 24.4   | 36.3  |
+|   Backbone    | Train data | Test data      | EvalType | AP   | AP<sub>50</sub> | AP<sub>75</sub> | AP<sub>S</sub> | AP<sub>M</sub> | AP<sub>L</sub> |
+|:-------------:|------------|----------------|----------|------|-----------------|-----------------|----------------|----------------|----------------|
+| ResNet50-FCN  | COCO       | Cityscapes val | Bbox     | 20.5 | 34.4            | 21.1            | 8.3            | 22.5           | 35.1           |
+| ResNet101-FCN | COCO       | Cityscapes val | Bbox     | 21.5 | 35.2            | 21.9            | 8.09           | 24.4           | 36.3           |
 
 #### Segmentation
 
-|   Backbone    | Train data | Test data      | EvalType | $AP$ | $AP_{50}$ | $AP_{75}$ | $AP_S$ | $AP_M$ | $AP_L$ |
-|:-------------:|------------|----------------|----------|------|-----------|-----------|--------|--------|--------|
-| ResNet50-FCN  | COCO       | Cityscapes val | Mask     | 17.0 | 30.6      | 16.3      | 4.4    | 16.7   | 32.6   |
-| ResNet101-FCN | COCO       | Cityscapes val | Mask     | 17.9 | 31.7      | 17.2      | 3.8    | 18.8   | 34.1   |
+|   Backbone    | Train data | Test data      | EvalType | AP   | AP<sub>50</sub> | AP<sub>75</sub> | AP<sub>S</sub> | AP<sub>M</sub> | AP<sub>L</sub> |
+|:-------------:|------------|----------------|----------|------|-----------------|-----------------|----------------|----------------|----------------|
+| ResNet50-FCN  | COCO       | Cityscapes val | Mask     | 17.0 | 30.6            | 16.3            | 4.4            | 16.7           | 32.6           |
+| ResNet101-FCN | COCO       | Cityscapes val | Mask     | 17.9 | 31.7            | 17.2            | 3.8            | 18.8           | 34.1           |
 
 ## Train on CityScapes Dataset
 <!-- We follow the MaskRCNN paper to train the model with $COCO+fine$ dataset.  -->
