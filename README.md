@@ -6,7 +6,7 @@ The purpose of this repo is to add/modify the original code to train and test on
 ## Metrics
 The evaluation metrics are following original MaskRCNN paper and the original repo.
 1. Average Precision ($AP$)
-2. $$AP_{50}$$: the AP with IOU = 0.5
+2. ![equation](AP_{50}): the AP with IOU = 0.5
 3. $AP_{75}$: the AP with IOU = 0.75
 4. $AP_{S}$: the AP in small scale
 5. $AP_{M}$: the AP in median scale
