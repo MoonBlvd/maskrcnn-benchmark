@@ -101,7 +101,7 @@ def convert_coco_stuff_mat(data_dir, out_dir):
         ann_dict['images'] = images
         print("Num images: %s" % len(images))
         with open(os.path.join(out_dir, json_name % data_set), 'wb') as outfile:
-            outfile.write(json.dumps(ann_dict))
+            outfile.write(json.dumps(ann_dict, indent=4))
 
 
 # for Cityscapes
@@ -146,9 +146,11 @@ def convert_cityscapes_instance_only(
         'car',
         'truck',
         'bus',
-        'train',
+        # 'train',
         'motorcycle',
         'bicycle',
+        'traffic light',
+        'traffic sign',
     ]
 
     for data_set, ann_dir in zip(sets, ann_dirs):
@@ -181,19 +183,22 @@ def convert_cityscapes_instance_only(
                     fullname = os.path.join(root, image['seg_file_name'])
                     objects = cs.instances2dict_with_polygons(
                         [fullname], verbose=False)[fullname]
-
+                    # print('traffic_light:' , len(objects['traffic light']))
                     for object_cls in objects:
+                        # print(object_cls)
                         if object_cls not in category_instancesonly:
                             continue  # skip non-instance categories
 
                         for obj in objects[object_cls]:
+                            print(obj.keys())
+                            print(object_cls)
                             if obj['contours'] == []:
-                                print('Warning: empty contours.')
+                                print('Warning: empty contours: ' + object_cls)
                                 continue  # skip non-instance categories
 
                             len_p = [len(p) for p in obj['contours']]
                             if min(len_p) <= 4:
-                                print('Warning: invalid contours.')
+                                # print('Warning: invalid contours: ' + object_cls)
                                 continue  # skip non-instance categories
 
                             ann = {}
@@ -224,7 +229,7 @@ def convert_cityscapes_instance_only(
         print("Num images: %s" % len(images))
         print("Num annotations: %s" % len(annotations))
         with open(os.path.join(out_dir, json_name % data_set), 'w') as outfile:
-            outfile.write(json.dumps(ann_dict))
+            outfile.write(json.dumps(ann_dict,indent=4))
 
 
 if __name__ == '__main__':

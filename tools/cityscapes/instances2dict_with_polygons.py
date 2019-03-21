@@ -40,8 +40,8 @@ def instances2dict_with_polygons(imageFileList, verbose=False):
 
         # Loop through all instance ids in instance image
         for instanceId in np.unique(imgNp):
-            if instanceId < 1000:
-                continue
+            # if instanceId < 1000:
+            #     continue
             instanceObj = Instance(imgNp, instanceId)
             instanceObj_dict = instanceObj.toDict()
 
@@ -53,7 +53,6 @@ def instances2dict_with_polygons(imageFileList, verbose=False):
 
                 polygons = [c.reshape(-1).tolist() for c in contour]
                 instanceObj_dict['contours'] = polygons
-
             instances[id2label[instanceObj.labelID].name].append(instanceObj_dict)
 
         imgKey = os.path.abspath(imageFileName)

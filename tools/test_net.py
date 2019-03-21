@@ -77,6 +77,7 @@ def main():
             output_folder = os.path.join(cfg.OUTPUT_DIR, "inference", dataset_name)
             mkdir(output_folder)
             output_folders[idx] = output_folder
+
     data_loaders_val = make_data_loader(cfg, is_train=False, is_distributed=distributed)
     for output_folder, dataset_name, data_loader_val in zip(output_folders, dataset_names, data_loaders_val):
         inference(
@@ -89,6 +90,7 @@ def main():
             expected_results=cfg.TEST.EXPECTED_RESULTS,
             expected_results_sigma_tol=cfg.TEST.EXPECTED_RESULTS_SIGMA_TOL,
             output_folder=output_folder,
+            convert_pred_coco2cityscapes=cfg.DATASETS.CONVERT,
         )
         synchronize()
 

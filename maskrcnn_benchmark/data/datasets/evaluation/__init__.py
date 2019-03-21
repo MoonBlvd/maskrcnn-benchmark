@@ -2,7 +2,7 @@ from maskrcnn_benchmark.data import datasets
 
 from .coco import coco_evaluation
 from .voc import voc_evaluation
-
+from .cityscapes import cityscapes_evaluation
 
 def evaluate(dataset, predictions, output_folder, **kwargs):
     """evaluate dataset using different methods based on dataset type.
@@ -19,9 +19,14 @@ def evaluate(dataset, predictions, output_folder, **kwargs):
         dataset=dataset, predictions=predictions, output_folder=output_folder, **kwargs
     )
     if isinstance(dataset, datasets.COCODataset):
+        print("Evaluating COCO....!")
         return coco_evaluation(**args)
     elif isinstance(dataset, datasets.PascalVOCDataset):
+        print("Evaluating PascalVOC....!")
         return voc_evaluation(**args)
+    elif isinstance(dataset, datasets.CityscapesDataset):
+        print("Evaluating cityscapes....!")
+        return cityscapes_evaluation(**args)
     else:
         dataset_name = dataset.__class__.__name__
         raise NotImplementedError("Unsupported dataset type {}.".format(dataset_name))
