@@ -6,7 +6,7 @@ from .bounding_box import BoxList
 from maskrcnn_benchmark.layers import nms as _box_nms
 
 
-def boxlist_nms(boxlist, nms_thresh, max_proposals=-1, score_field="scores"):
+def boxlist_nms(boxlist, nms_thresh, max_proposals=-1, score_field="scores",return_idx=False):
     """
     Performs non-maximum suppression on a boxlist, with scores specified
     in a boxlist field via score_field.
@@ -28,7 +28,10 @@ def boxlist_nms(boxlist, nms_thresh, max_proposals=-1, score_field="scores"):
     if max_proposals > 0:
         keep = keep[: max_proposals]
     boxlist = boxlist[keep]
-    return boxlist.convert(mode)
+    if return_idx:
+        return boxlist.convert(mode), keep
+    else:
+        return boxlist.convert(mode)
 
 
 def remove_small_boxes(boxlist, min_size):

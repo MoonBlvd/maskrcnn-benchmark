@@ -13,12 +13,12 @@ class ROIBoxHead(torch.nn.Module):
     Generic Box Head class.
     """
 
-    def __init__(self, cfg, in_channels):
+    def __init__(self, cfg, in_channels, return_idx=False):
         super(ROIBoxHead, self).__init__()
         self.feature_extractor = make_roi_box_feature_extractor(cfg, in_channels)
         self.predictor = make_roi_box_predictor(
             cfg, self.feature_extractor.out_channels)
-        self.post_processor = make_roi_box_post_processor(cfg)
+        self.post_processor = make_roi_box_post_processor(cfg, return_idx=return_idx)
         self.loss_evaluator = make_roi_box_loss_evaluator(cfg)
 
     def forward(self, features, proposals, targets=None):
@@ -49,8 +49,8 @@ class ROIBoxHead(torch.nn.Module):
         class_logits, box_regression = self.predictor(x)
 
         if not self.training:
-            result = self.post_processor((class_logits, box_regression), proposals)
-            return x, result, {}
+            result, keep_inds = self.post_processor((class_logits, box_regression), proposals)
+            return x, result, {}, keep_inds
 
         loss_classifier, loss_box_reg = self.loss_evaluator(
             [class_logits], [box_regression]
@@ -59,13 +59,14 @@ class ROIBoxHead(torch.nn.Module):
             x,
             proposals,
             dict(loss_classifier=loss_classifier, loss_box_reg=loss_box_reg),
+            None
         )
 
 
-def build_roi_box_head(cfg, in_channels):
+def build_roi_box_head(cfg, in_channels, return_idx=False):
     """
     Constructs a new box head.
     By default, uses ROIBoxHead, but if it turns out not to be enough, just register a new class
     and make it a parameter in the config
     """
-    return ROIBoxHead(cfg, in_channels)
+    return ROIBoxHead(cfg, in_channels, return_idx=return_idx)

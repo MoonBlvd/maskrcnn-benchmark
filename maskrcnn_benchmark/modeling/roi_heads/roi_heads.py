@@ -12,18 +12,26 @@ class CombinedROIHeads(torch.nn.ModuleDict):
     head.
     """
 
-    def __init__(self, cfg, heads):
+    def __init__(self, cfg, heads, save_features=False):
         super(CombinedROIHeads, self).__init__(heads)
         self.cfg = cfg.clone()
         if cfg.MODEL.MASK_ON and cfg.MODEL.ROI_MASK_HEAD.SHARE_BOX_FEATURE_EXTRACTOR:
             self.mask.feature_extractor = self.box.feature_extractor
         if cfg.MODEL.KEYPOINT_ON and cfg.MODEL.ROI_KEYPOINT_HEAD.SHARE_BOX_FEATURE_EXTRACTOR:
             self.keypoint.feature_extractor = self.box.feature_extractor
+        self.save_features = save_features
 
     def forward(self, features, proposals, targets=None):
         losses = {}
         # TODO rename x to roi_box_features, if it doesn't increase memory consumption
-        x, detections, loss_box = self.box(features, proposals, targets)
+        x, detections, loss_box, keep_inds = self.box(features, proposals, targets)
+        # print("keep_inds: ", keep_inds)
+
+        if self.save_features:
+            roi_features = x[keep_inds]
+        else:
+            roi_features = None
+
         losses.update(loss_box)
         if self.cfg.MODEL.MASK_ON:
             mask_features = features
@@ -52,10 +60,10 @@ class CombinedROIHeads(torch.nn.ModuleDict):
             # this makes the API consistent during training and testing
             x, detections, loss_keypoint = self.keypoint(keypoint_features, detections, targets)
             losses.update(loss_keypoint)
-        return x, detections, losses
+        return roi_features, detections, losses
 
 
-def build_roi_heads(cfg, in_channels):
+def build_roi_heads(cfg, in_channels, save_features=False):
     # individually create the heads, that will be combined together
     # afterwards
     roi_heads = []
@@ -63,7 +71,7 @@ def build_roi_heads(cfg, in_channels):
         return []
 
     if not cfg.MODEL.RPN_ONLY:
-        roi_heads.append(("box", build_roi_box_head(cfg, in_channels)))
+        roi_heads.append(("box", build_roi_box_head(cfg, in_channels, return_idx=save_features)))
     if cfg.MODEL.MASK_ON:
         roi_heads.append(("mask", build_roi_mask_head(cfg, in_channels)))
     if cfg.MODEL.KEYPOINT_ON:
@@ -71,6 +79,6 @@ def build_roi_heads(cfg, in_channels):
 
     # combine individual heads in a single module
     if roi_heads:
-        roi_heads = CombinedROIHeads(cfg, roi_heads)
+        roi_heads = CombinedROIHeads(cfg, roi_heads, save_features=save_features)
 
     return roi_heads

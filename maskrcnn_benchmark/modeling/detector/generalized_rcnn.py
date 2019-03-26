@@ -23,12 +23,13 @@ class GeneralizedRCNN(nn.Module):
         detections / masks from it.
     """
 
-    def __init__(self, cfg):
+    def __init__(self, cfg, save_features=False):
         super(GeneralizedRCNN, self).__init__()
 
         self.backbone = build_backbone(cfg)
         self.rpn = build_rpn(cfg, self.backbone.out_channels)
-        self.roi_heads = build_roi_heads(cfg, self.backbone.out_channels)
+        self.roi_heads = build_roi_heads(cfg, self.backbone.out_channels, save_features=save_features)
+        self.save_features = save_features
 
     def forward(self, images, targets=None):
         """
@@ -37,6 +38,7 @@ class GeneralizedRCNN(nn.Module):
             targets (list[BoxList]): ground-truth boxes present in the image (optional)
 
         Returns:
+            x extracted features from RPN or ROI heads
             result (list[BoxList] or dict[Tensor]): the output from the model.
                 During training, it returns a dict[Tensor] which contains the losses.
                 During testing, it returns list[BoxList] contains additional fields
@@ -61,5 +63,7 @@ class GeneralizedRCNN(nn.Module):
             losses.update(detector_losses)
             losses.update(proposal_losses)
             return losses
-
-        return result
+        if self.save_features:
+            return result, x
+        else:
+            return result
