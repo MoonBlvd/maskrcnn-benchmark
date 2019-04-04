@@ -5,7 +5,7 @@ import os
 
 
 class DatasetCatalog(object):
-    DATA_DIR = "/home/brianyao/Documents/maskrcnn-benchmark/maskrcnn_benchmark/data/datasets"
+    DATA_DIR = "/u/bryao/work/DATA"#"/home/brianyao/Documents/maskrcnn-benchmark/maskrcnn_benchmark/data/datasets"
     DATASETS = {
         "coco_2017_train": {
             "img_dir": "coco/train2017",
@@ -93,16 +93,16 @@ class DatasetCatalog(object):
             # PASCAL VOC2012 doesn't made the test annotations available, so there's no json annotation
         },
         "cityscapes_fine_instanceonly_seg_train_cocostyle": {
-            "img_dir": "cityscapes/leftImg8bit/train",
-            "ann_file": "cityscapes/annotations/instancesonly_filtered_gtFine_train.json"
+            "img_dir": "Cityscapes/leftImg8bit/train",
+            "ann_file": "Cityscapes/annotations/instancesonly_filtered_gtFine_train.json"
         },
         "cityscapes_fine_instanceonly_seg_val_cocostyle": {
-            "img_dir": "cityscapes/leftImg8bit/val",
-            "ann_file": "cityscapes/annotations/instancesonly_filtered_gtFine_val.json"
+            "img_dir": "Cityscapes/leftImg8bit/val",
+            "ann_file": "Cityscapes/annotations/instancesonly_filtered_gtFine_val.json"
         },
         "cityscapes_fine_instanceonly_seg_test_cocostyle": {
-            "img_dir": "cityscapes/leftImg8bit/test",
-            "ann_file": "cityscapes/annotations/instancesonly_filtered_gtFine_test.json"
+            "img_dir": "Cityscapes/leftImg8bit/test",
+            "ann_file": "Cityscapes/annotations/instancesonly_filtered_gtFine_test.json"
         }
     }
 
