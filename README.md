@@ -5,6 +5,12 @@ The purpose of this repo is to add/modify the original code to train and test on
 
 Th original Mask-RCNN paper can be found [here](https://arxiv.org/pdf/1703.06870.pdf).
 
+## Code
+
+To run detection on a dataset, modify and run ```run_detection.sh```
+To run multi-gpu training on a dataset, modify and run ```multi_gpu_train.sh```
+To run test and get evaluationi metrics, checkout ```tools/test_net.py``` and ```maskrcnn_becnmark/eval_cityscapes.py```
+
 ## Metrics
 The evaluation metrics are following original MaskRCNN paper and the original repo.
 1. Average Precision (AP)
