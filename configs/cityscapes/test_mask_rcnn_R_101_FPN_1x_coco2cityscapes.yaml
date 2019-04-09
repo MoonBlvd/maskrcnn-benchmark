@@ -1,6 +1,6 @@
 MODEL:
   META_ARCHITECTURE: "GeneralizedRCNN"
-  WEIGHT: "/u/bryao/work/DATA/Cityscapes/checkpoints/coco2cityscapes_R-101-FPN.pkl" #"maskrcnn_benchmark/data/datasets/cityscapes/checkpoints/coco2cityscapes_R-101-FPN.pkl"
+  WEIGHT: "/u/bryao/work/Documents/maskrcnn-benchmark/checkpoints/model_0075000.pth" 
   BACKBONE:
     CONV_BODY: "R-101-FPN" 
   RESNETS:
@@ -20,7 +20,7 @@ MODEL:
     POOLER_SAMPLING_RATIO: 2
     FEATURE_EXTRACTOR: "FPN2MLPFeatureExtractor"
     PREDICTOR: "FPNPredictor"
-    NUM_CLASSES: 9 
+    NUM_CLASSES: 9 #81
   ROI_MASK_HEAD:
     POOLER_SCALES: (0.25, 0.125, 0.0625, 0.03125)
     FEATURE_EXTRACTOR: "MaskRCNNFPNFeatureExtractor"
@@ -38,12 +38,12 @@ DATALOADER:
   SIZE_DIVISIBILITY: 32
   NUM_WORKERS: 0
 SOLVER:
-  BASE_LR: 0.01
+  BASE_LR: 0.0075 #0.02
   WEIGHT_DECAY: 0.0001
-  STEPS: (18000,)
-  MAX_ITER: 24000
+  STEPS: (60000, 80000)
+  MAX_ITER: 720000
 TEST:
   IMS_PER_BATCH: 1
 INPUT:
-  MIN_SIZE_TEST: 640
-  MAX_SIZE_TEST: 1280
+  MIN_SIZE_TEST: 1024
+  MAX_SIZE_TEST: 2048

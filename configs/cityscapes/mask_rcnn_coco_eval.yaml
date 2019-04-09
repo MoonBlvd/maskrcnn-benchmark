@@ -1,6 +1,7 @@
 MODEL:
   META_ARCHITECTURE: "GeneralizedRCNN"
-  WEIGHT: "maskrcnn_benchmark/data/datasets/cityscapes/checkpoints/coco2cityscapes_R-101-FPN.pkl"
+  WEIGHT: "/u/bryao/work/Documents/maskrcnn-benchmark/checkpoints/model_0075000.pth" 
+          #"maskrcnn_benchmark/data/datasets/cityscapes/checkpoints/coco2cityscapes_R-101-FPN.pkl"
           #"catalog://Caffe2Detectron/COCO/35861795/e2e_mask_rcnn_R-101-FPN_1x" 
           # "catalog://Caffe2Detectron/COCO/35858933/e2e_mask_rcnn_R-50-FPN_1x" 
   BACKBONE:

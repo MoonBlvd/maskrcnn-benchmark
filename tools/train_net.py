@@ -28,13 +28,15 @@ from maskrcnn_benchmark.utils.logger import setup_logger
 from maskrcnn_benchmark.utils.miscellaneous import mkdir
 
 
-def train(cfg, local_rank, distributed):
+def train(cfg, local_rank, distributed, skip_test):
     model = build_detection_model(cfg)
     device = torch.device(cfg.MODEL.DEVICE)
     model.to(device)
 
     optimizer = make_optimizer(cfg, model)
     scheduler = make_lr_scheduler(cfg, optimizer)
+
+    print("Dstributed: ", distributed)
 
     if distributed:
         model = torch.nn.parallel.DistributedDataParallel(
@@ -65,6 +67,7 @@ def train(cfg, local_rank, distributed):
     checkpoint_period = cfg.SOLVER.CHECKPOINT_PERIOD
 
     do_train(
+        cfg,
         model,
         data_loader,
         optimizer,
@@ -73,6 +76,8 @@ def train(cfg, local_rank, distributed):
         device,
         checkpoint_period,
         arguments,
+        distributed,
+        skip_test
     )
 
     return model
@@ -166,7 +171,7 @@ def main():
         logger.info(config_str)
     logger.info("Running with config:\n{}".format(cfg))
 
-    model = train(cfg, args.local_rank, args.distributed)
+    model = train(cfg, args.local_rank, args.distributed, args.skip_test)
 
     if not args.skip_test:
         run_test(cfg, model, args.distributed)

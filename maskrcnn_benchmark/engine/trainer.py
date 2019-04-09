@@ -36,6 +36,7 @@ def reduce_loss_dict(loss_dict):
 
 
 def do_train(
+    cfg,
     model,
     data_loader,
     optimizer,
@@ -44,6 +45,8 @@ def do_train(
     device,
     checkpoint_period,
     arguments,
+    distributed=False,
+    skip_test=False
 ):
     logger = logging.getLogger("maskrcnn_benchmark.trainer")
     logger.info("Start training")
@@ -53,18 +56,20 @@ def do_train(
     model.train()
     start_training_time = time.time()
     end = time.time()
+    logger.info("Max iteration is: {}".format(max_iter))
+    logger.info("Start iteration is: {}".format(start_iter))
+    print("Total dataloader length is: ", len(data_loader))
     for iteration, (images, targets, _) in enumerate(data_loader, start_iter):
+        
         data_time = time.time() - end
         iteration = iteration + 1
         arguments["iteration"] = iteration
 
         scheduler.step()
-
         images = images.to(device)
         targets = [target.to(device) for target in targets]
 
         loss_dict = model(images, targets)
-
         losses = sum(loss for loss in loss_dict.values())
 
         # reduce losses over all GPUs for logging purposes
@@ -100,8 +105,11 @@ def do_train(
                     lr=optimizer.param_groups[0]["lr"],
                     memory=torch.cuda.max_memory_allocated() / 1024.0 / 1024.0,
                 )
-            )
+            )            
+
         if iteration % checkpoint_period == 0:
+            if not skip_test:
+                do_test(cfg, model, distributed)
             checkpointer.save("model_{:07d}".format(iteration), **arguments)
         if iteration == max_iter:
             checkpointer.save("model_final", **arguments)
@@ -113,3 +121,34 @@ def do_train(
             total_time_str, total_training_time / (max_iter)
         )
     )
+
+def do_test(cfg, model, distributed):
+    if distributed:
+        model = model.module
+    torch.cuda.empty_cache()  # TODO check if it helps
+    iou_types = ("bbox",)
+    if cfg.MODEL.MASK_ON:
+        iou_types = iou_types + ("segm",)
+    if cfg.MODEL.KEYPOINT_ON:
+        iou_types = iou_types + ("keypoints",)
+    output_folders = [None] * len(cfg.DATASETS.TEST)
+    dataset_names = cfg.DATASETS.TEST
+    if cfg.OUTPUT_DIR:
+        for idx, dataset_name in enumerate(dataset_names):
+            output_folder = os.path.join(cfg.OUTPUT_DIR, "inference", dataset_name)
+            mkdir(output_folder)
+            output_folders[idx] = output_folder
+    data_loaders_val = make_data_loader(cfg, is_train=False, is_distributed=distributed)
+    for output_folder, dataset_name, data_loader_val in zip(output_folders, dataset_names, data_loaders_val):
+        inference(
+            model,
+            data_loader_val,
+            dataset_name=dataset_name,
+            iou_types=iou_types,
+            box_only=False if cfg.MODEL.RETINANET_ON else cfg.MODEL.RPN_ONLY,
+            device=cfg.MODEL.DEVICE,
+            expected_results=cfg.TEST.EXPECTED_RESULTS,
+            expected_results_sigma_tol=cfg.TEST.EXPECTED_RESULTS_SIGMA_TOL,
+            output_folder=output_folder,
+        )
+        synchronize()

@@ -174,7 +174,7 @@ class PostProcessor(nn.Module):
         if return_idx:
             return result, keep_inds
         else:
-            return result
+            return result, None
 
 
 def make_roi_box_post_processor(cfg, return_idx=False):

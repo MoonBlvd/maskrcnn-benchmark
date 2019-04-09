@@ -29,4 +29,5 @@ dist/
 /datasets
 /models
 
-log.txt
+checkpoints/
+inference/
