@@ -103,8 +103,7 @@ class DatasetCatalog(object):
         "cityscapes_fine_instanceonly_seg_test_cocostyle": {
             "img_dir": "Cityscapes/leftImg8bit/test",
             "ann_file": "Cityscapes/annotations/instancesonly_filtered_gtFine_test.json"
-        }
-
+        },
         "bdd100k_det_train_cocostyle": {
             "img_dir": "BDD/images/100k/train",
             "ann_file": "Cityscapes/annotations/instancesonly_filtered_gtFine_train.json"
@@ -130,6 +129,8 @@ class DatasetCatalog(object):
             )
             if 'cityscapes' in name:
                 factory="CityscapesDataset"
+            elif 'bdd100k' in name:
+                factory="BDD100KDataset"
             else:
                 factory='COCODataset'
             return dict(

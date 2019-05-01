@@ -1,6 +1,6 @@
 MODEL:
   META_ARCHITECTURE: "GeneralizedRCNN"
-  WEIGHT: "/u/bryao/work/DATA/BDD/checkpoints/coco2bdd_R-101-FPN.pkl" #"maskrcnn_benchmark/data/datasets/cityscapes/checkpoints/coco2bdd_R-101-FPN.pkl"
+  WEIGHT: "/u/bryao/work/DATA/BDD100K/checkpoints/coco2bdd_R-101-FPN.pkl" #"maskrcnn_benchmark/data/datasets/BDD100K/checkpoints/coco2bdd_R-101-FPN.pkl"
   BACKBONE:
     CONV_BODY: "R-101-FPN" 
   RESNETS:
@@ -36,7 +36,7 @@ DATASETS:
   CONVERT: False #True
 DATALOADER:
   SIZE_DIVISIBILITY: 32
-  NUM_WORKERS: 3 #12
+  NUM_WORKERS: 12
 SOLVER:
   IMS_PER_BATCH: 6
   BASE_LR: 0.0075 #0.02
@@ -48,4 +48,4 @@ TEST:
 # INPUT:
 #   MIN_SIZE_TEST: 1024
 #   MAX_SIZE_TEST: 2048
-OUTPUT_DIR: 'checkpoints/'
+OUTPUT_DIR: 'checkpoints/BDD100K/'

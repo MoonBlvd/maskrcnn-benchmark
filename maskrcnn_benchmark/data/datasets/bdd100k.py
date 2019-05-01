@@ -33,8 +33,8 @@ def has_valid_annotation(anno):
 
 
 class BDD100KDataset(torchvision.datasets.coco.CocoDetection):
-    '''use COCODataset module because the cityscapes is converted to coco format'''
-    CLASSES = (
+    '''use COCODataset module because the BDD100KDataset is converted to coco format'''
+    CLASSES = {
         "__background__ ": 0,
         'person': 1,
         'rider': 2,
@@ -74,7 +74,7 @@ class BDD100KDataset(torchvision.datasets.coco.CocoDetection):
         self.transforms = transforms
 
     def __getitem__(self, idx):
-        img, anno = super(CityscapesDataset, self).__getitem__(idx)
+        img, anno = super(BDD100KDataset, self).__getitem__(idx)
 
         # filter crowd annotations
         # TODO might be better to add an extra field
