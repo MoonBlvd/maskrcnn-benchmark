@@ -37,7 +37,7 @@ def build_dataset(dataset_list, transforms, dataset_catalog, is_train=True):
         args = data["args"]
         # for COCODataset, we want to remove images without annotations
         # during training
-        if data["factory"] == "COCODataset" or data["factory"] == "CityscapesDataset" :
+        if data["factory"] == "COCODataset" or data["factory"] == "CityscapesDataset" or data["factory"] == "BDD100KDataset" :
             args["remove_images_without_annotations"] = is_train
         if data["factory"] == "PascalVOCDataset":
             args["use_difficult"] = not is_train

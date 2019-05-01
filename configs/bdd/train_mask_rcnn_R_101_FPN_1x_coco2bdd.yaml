@@ -1,6 +1,6 @@
 MODEL:
   META_ARCHITECTURE: "GeneralizedRCNN"
-  WEIGHT: "/u/bryao/work/DATA/Cityscapes/checkpoints/coco2cityscapes_R-101-FPN.pkl" #"maskrcnn_benchmark/data/datasets/cityscapes/checkpoints/coco2cityscapes_R-101-FPN.pkl"
+  WEIGHT: "/u/bryao/work/DATA/BDD/checkpoints/coco2bdd_R-101-FPN.pkl" #"maskrcnn_benchmark/data/datasets/cityscapes/checkpoints/coco2bdd_R-101-FPN.pkl"
   BACKBONE:
     CONV_BODY: "R-101-FPN" 
   RESNETS:
@@ -20,7 +20,7 @@ MODEL:
     POOLER_SAMPLING_RATIO: 2
     FEATURE_EXTRACTOR: "FPN2MLPFeatureExtractor"
     PREDICTOR: "FPNPredictor"
-    NUM_CLASSES: 9 #81
+    NUM_CLASSES: 11
   ROI_MASK_HEAD:
     POOLER_SCALES: (0.25, 0.125, 0.0625, 0.03125)
     FEATURE_EXTRACTOR: "MaskRCNNFPNFeatureExtractor"
@@ -29,10 +29,10 @@ MODEL:
     POOLER_SAMPLING_RATIO: 2
     RESOLUTION: 28
     SHARE_BOX_FEATURE_EXTRACTOR: False
-  MASK_ON: True
+  MASK_ON: False
 DATASETS:
-  TRAIN: ("cityscapes_fine_instanceonly_seg_train_cocostyle",)
-  TEST: ("cityscapes_fine_instanceonly_seg_val_cocostyle",)
+  TRAIN: ("bdd100k_det_train_cocostyle",)
+  TEST: ("bdd100k_det_val_cocostyle",)
   CONVERT: False #True
 DATALOADER:
   SIZE_DIVISIBILITY: 32

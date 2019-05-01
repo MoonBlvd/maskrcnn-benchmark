@@ -3,4 +3,5 @@ from .coco import COCODataset
 from .voc import PascalVOCDataset
 from .concat_dataset import ConcatDataset
 from .cityscapes import CityscapesDataset
+from .bdd import BDD100KDataset
 __all__ = ["COCODataset", "ConcatDataset", "PascalVOCDataset", "CityscapesDataset", "BDD100KDataset"]

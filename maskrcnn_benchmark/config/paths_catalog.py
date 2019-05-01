@@ -104,6 +104,19 @@ class DatasetCatalog(object):
             "img_dir": "Cityscapes/leftImg8bit/test",
             "ann_file": "Cityscapes/annotations/instancesonly_filtered_gtFine_test.json"
         }
+
+        "bdd100k_det_train_cocostyle": {
+            "img_dir": "BDD/images/100k/train",
+            "ann_file": "Cityscapes/annotations/instancesonly_filtered_gtFine_train.json"
+        },
+        "bdd100k_det_val_cocostyle": {
+            "img_dir": "BDD/images/100k/val",
+            "ann_file": "Cityscapes/annotations/instancesonly_filtered_gtFine_val.json"
+        },
+        "bdd100k_det_test_cocostyle": {
+            "img_dir": "BDD/images/100k/test",
+            "ann_file": "Cityscapes/annotations/instancesonly_filtered_gtFine_test.json"
+        }
     }
 
     @staticmethod

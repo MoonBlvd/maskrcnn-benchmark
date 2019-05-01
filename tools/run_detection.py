@@ -35,9 +35,16 @@ CATEGORIES = ["__background__ ",
 confidence_threshold = 0.7
 
 
-def x1y1x2y2_to_xywh(bboxes):
+def x1y1x2y2_to_cxcywh(bboxes):
+    '''
+    Added April 14: 
+        Bug: previous output was x1y1wh
+        Fix: changed to cxcywh
+    '''
     bboxes[:,2] -= bboxes[:,0]
     bboxes[:,3] -= bboxes[:,1] 
+    bboxes[:,0] += bboxes[:,2]/2
+    bboxes[:,1] += bboxes[:,3]/2
     return bboxes
 
 def select_top_predictions(predictions):
@@ -191,7 +198,7 @@ def main():
             track_ids = -1 * np.ones([bboxes.shape[0],1])
             
             # if args.for_deepsort:
-            bboxes = x1y1x2y2_to_xywh(copy.deepcopy(bboxes))
+            bboxes = x1y1x2y2_to_cxcywh(copy.deepcopy(bboxes))
 
             classes = np.expand_dims(classes, axis=-1)
             scores = np.expand_dims(scores, axis=-1)
