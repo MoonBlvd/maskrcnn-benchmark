@@ -105,16 +105,16 @@ class DatasetCatalog(object):
             "ann_file": "Cityscapes/annotations/instancesonly_filtered_gtFine_test.json"
         },
         "bdd100k_det_train_cocostyle": {
-            "img_dir": "BDD/images/100k/train",
-            "ann_file": "Cityscapes/annotations/instancesonly_filtered_gtFine_train.json"
+            "img_dir": "BDD100K/images/100k/train",
+            "ann_file": "BDD100K/labels/bdd100k_labels_images_det_coco_train.json"
         },
         "bdd100k_det_val_cocostyle": {
-            "img_dir": "BDD/images/100k/val",
-            "ann_file": "Cityscapes/annotations/instancesonly_filtered_gtFine_val.json"
+            "img_dir": "BDD100K/images/100k/val",
+            "ann_file": "BDD100K/labels/bdd100k_labels_images_det_coco_val.json"
         },
         "bdd100k_det_test_cocostyle": {
-            "img_dir": "BDD/images/100k/test",
-            "ann_file": "Cityscapes/annotations/instancesonly_filtered_gtFine_test.json"
+            "img_dir": "BDD100K/images/100k/test",
+            "ann_file": "BDD100K/labels/ibdd100k_labels_images_det_coco_val.json"
         }
     }
 
