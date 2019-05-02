@@ -137,7 +137,7 @@ def do_test(cfg, model, distributed):
     if cfg.OUTPUT_DIR:
         for idx, dataset_name in enumerate(dataset_names):
             output_folder = os.path.join(cfg.OUTPUT_DIR, "inference", dataset_name)
-            mkdir(output_folder)
+            os.makedirs(output_folder)
             output_folders[idx] = output_folder
     data_loaders_val = make_data_loader(cfg, is_train=False, is_distributed=distributed)
     for output_folder, dataset_name, data_loader_val in zip(output_folders, dataset_names, data_loaders_val):
