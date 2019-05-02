@@ -16,6 +16,7 @@ from maskrcnn_benchmark.utils.collect_env import collect_env_info
 from maskrcnn_benchmark.utils.comm import synchronize, get_rank
 from maskrcnn_benchmark.utils.logger import setup_logger
 from maskrcnn_benchmark.utils.miscellaneous import mkdir
+from maskrcnn_benchmark.data.datasets.evaluation import evaluate
 
 
 def main():
@@ -80,18 +81,35 @@ def main():
 
     data_loaders_val = make_data_loader(cfg, is_train=False, is_distributed=distributed)
     for output_folder, dataset_name, data_loader_val in zip(output_folders, dataset_names, data_loaders_val):
-        inference(
-            model,
-            data_loader_val,
-            dataset_name=dataset_name,
-            iou_types=iou_types,
-            box_only=False if cfg.MODEL.RETINANET_ON else cfg.MODEL.RPN_ONLY,
-            device=cfg.MODEL.DEVICE,
-            expected_results=cfg.TEST.EXPECTED_RESULTS,
-            expected_results_sigma_tol=cfg.TEST.EXPECTED_RESULTS_SIGMA_TOL,
-            output_folder=output_folder,
-            convert_pred_coco2cityscapes=cfg.DATASETS.CONVERT,
-        )
+        # if the inference is done, only do the evaluation
+        if os.path.isfile(os.path.join(output_folder, "predictions.pth")):
+            logger.info("Inference was done, only do evaluation!")
+            predictions = torch.load(os.path.join(output_folder, "predictions.pth"))
+            
+            extra_args = dict(
+                            box_only=False if cfg.MODEL.RETINANET_ON else cfg.MODEL.RPN_ONLY,
+                            iou_types=iou_types,
+                            expected_results=cfg.TEST.EXPECTED_RESULTS,
+                            expected_results_sigma_tol=cfg.TEST.EXPECTED_RESULTS_SIGMA_TOL,
+                            )   
+            evaluate(dataset=data_loader_val.dataset,
+                    predictions=predictions,
+                    output_folder=output_folder,
+                    **extra_args)
+        else:
+            logger.info("No inference was done, run inference first")
+            inference(
+                model,
+                data_loader_val,
+                dataset_name=dataset_name,
+                iou_types=iou_types,
+                box_only=False if cfg.MODEL.RETINANET_ON else cfg.MODEL.RPN_ONLY,
+                device=cfg.MODEL.DEVICE,
+                expected_results=cfg.TEST.EXPECTED_RESULTS,
+                expected_results_sigma_tol=cfg.TEST.EXPECTED_RESULTS_SIGMA_TOL,
+                output_folder=output_folder,
+                convert_pred_coco2cityscapes=cfg.DATASETS.CONVERT,
+            )
         synchronize()
 
 
