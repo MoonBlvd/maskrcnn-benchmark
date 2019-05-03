@@ -27,7 +27,7 @@ The evaluation metrics are following original MaskRCNN paper and the original re
 | ResNet50-FCN  | COCO        | Cityscapes val | Bbox     | 20.5 | 34.4            | 21.1            | 8.3            | 22.5           | 35.1           |
 | ResNet101-FCN | COCO        | Cityscapes val | Bbox     | 21.5 | 35.3            | 21.9            | 8.9 (7.7?)     | 24.4           | 36.3           |
 | ResNet101-FCN | COCO + fine | Cityscapes val | Bbox     | 33.8 | 57.2            | 35.4            | 10.4           | 36.4           | 53.0           |
-| ResNet101-FCN | COCO + BDD100K | BDD100K val | Bbox     | 28.5 | 54.0            | 25.9            | 12.9           | 32.9           | 49.8           |
+| ResNet101-FCN | COCO + BDD100K | BDD100K val | Bbox     | 31.2 | 57.5           | 29.1            | 14.0           | 35.9           | 54.2           |
 #### Segmentation
 
 |   Backbone    | Train data  | Test data      | EvalType | AP   | AP<sub>50</sub> | AP<sub>75</sub> | AP<sub>S</sub> | AP<sub>M</sub> | AP<sub>L</sub> |
