@@ -40,7 +40,6 @@ def do_bdd100k_evaluation(
         if output_folder:
             torch.save(res, os.path.join(output_folder, "box_proposals.pth"))
         return
-    print("Evaluating BBOX and SEGMENTATION...")
     logger.info("Preparing results for COCO format")
     coco_results = {}
     if "bbox" in iou_types:

@@ -1,6 +1,6 @@
 MODEL:
   META_ARCHITECTURE: "GeneralizedRCNN"
-  WEIGHT: "/u/bryao/work/DATA/BDD100K/checkpoints/BDD100K/last_checkpoint" #"maskrcnn_benchmark/data/datasets/BDD100K/checkpoints/coco2bdd_R-101-FPN.pkl"
+  WEIGHT: "/u/bryao/work/DATA/BDD100K/checkpoints/coco2bdd_R-101-FPN.pkl" #"/u/bryao/work/Documents/maskrcnn-benchmark/checkpoints/BDD100K/model_final.pth" #"maskrcnn_benchmark/data/datasets/BDD100K/checkpoints/coco2bdd_R-101-FPN.pkl"
   BACKBONE:
     CONV_BODY: "R-101-FPN" 
   RESNETS:
