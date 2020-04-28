@@ -5,7 +5,7 @@ import os
 
 
 class DatasetCatalog(object):
-    DATA_DIR = "/u/bryao/work/DATA"#"/home/brianyao/Documents/maskrcnn-benchmark/maskrcnn_benchmark/data/datasets"
+    DATA_DIR = "/home/data/vision7/"#"/home/brianyao/Documents/maskrcnn-benchmark/maskrcnn_benchmark/data/datasets"
     DATASETS = {
         "coco_2017_train": {
             "img_dir": "coco/train2017",
@@ -115,7 +115,13 @@ class DatasetCatalog(object):
         "bdd100k_det_test_cocostyle": {
             "img_dir": "BDD100K/images/100k/test",
             "ann_file": "BDD100K/labels/ibdd100k_labels_images_det_coco_val.json"
-        }
+        },
+        # Run detection model in A3D val videos
+        "a3d_coco_all": {
+            "img_dir": "A3D_2.0", #"/media/DATA/A3D_2.0", #"/u/bryao/work/DATA/A3D_2.0", #
+            "ann_file": "A3D_2.0/labels/*",
+            "split_file": "A3D_2.0/all_split.txt"
+        },
     }
 
     @staticmethod
@@ -131,6 +137,13 @@ class DatasetCatalog(object):
                 factory="CityscapesDataset"
             elif 'bdd100k' in name:
                 factory="BDD100KDataset"
+            elif 'a3d'  in name:
+                data_dir = DatasetCatalog.DATA_DIR
+                attrs = DatasetCatalog.DATASETS[name]
+                args.update(
+                    {'split_file': os.path.join(data_dir, attrs["split_file"])}
+                )
+                factory = 'A3DDataset'
             else:
                 factory='COCODataset'
             return dict(

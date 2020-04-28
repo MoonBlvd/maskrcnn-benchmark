@@ -4,13 +4,14 @@ import random
 import torch
 import torchvision
 from torchvision.transforms import functional as F
+from maskrcnn_benchmark.structures.bounding_box import BoxList
 
 
 class Compose(object):
     def __init__(self, transforms):
         self.transforms = transforms
 
-    def __call__(self, image, target):
+    def __call__(self, image, target=None):
         for t in self.transforms:
             image, target = t(image, target)
         return image, target
@@ -57,7 +58,8 @@ class Resize(object):
     def __call__(self, image, target):
         size = self.get_size(image.size)
         image = F.resize(image, size)
-        target = target.resize(image.size)
+        if isinstance(target, BoxList):
+            target = target.resize(image.size)
         return image, target
 
 
@@ -68,7 +70,8 @@ class RandomHorizontalFlip(object):
     def __call__(self, image, target):
         if random.random() < self.prob:
             image = F.hflip(image)
-            target = target.transpose(0)
+            if isinstance(target, BoxList):
+                target = target.transpose(0)
         return image, target
 
 

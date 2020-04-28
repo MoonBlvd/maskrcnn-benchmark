@@ -12,7 +12,7 @@ from . import samplers
 
 from .collate_batch import BatchCollator
 from .transforms import build_transforms
-
+import pdb
 
 def build_dataset(dataset_list, transforms, dataset_catalog, is_train=True):
     """
@@ -37,7 +37,10 @@ def build_dataset(dataset_list, transforms, dataset_catalog, is_train=True):
         args = data["args"]
         # for COCODataset, we want to remove images without annotations
         # during training
-        if data["factory"] == "COCODataset" or data["factory"] == "CityscapesDataset" or data["factory"] == "BDD100KDataset" :
+        if data["factory"] == "COCODataset" or \
+            data["factory"] == "CityscapesDataset" or \
+            data["factory"] == "BDD100KDataset" or \
+            data["factory"] == "A3DDataset":
             args["remove_images_without_annotations"] = is_train
         if data["factory"] == "PascalVOCDataset":
             args["use_difficult"] = not is_train

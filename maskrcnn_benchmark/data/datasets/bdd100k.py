@@ -72,6 +72,7 @@ class BDD100KDataset(torchvision.datasets.coco.CocoDetection):
         }
         self.id_to_img_map = {k: v for k, v in enumerate(self.ids)}
         self.transforms = transforms
+        self.labels = list(BDD100KDataset.CLASSES.keys())
 
     def __getitem__(self, idx):
         img, anno = super(BDD100KDataset, self).__getitem__(idx)

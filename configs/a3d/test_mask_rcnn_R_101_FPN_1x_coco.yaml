@@ -1,6 +1,6 @@
 MODEL:
   META_ARCHITECTURE: "GeneralizedRCNN"
-  WEIGHT: "/u/bryao/work/Documents/maskrcnn-benchmark/checkpoints/fine_tune_Cityscapes_1/model_0075000.pth" 
+  WEIGHT: "/u/bryao/work/Documents/maskrcnn-benchmark/checkpoints/BDD100K/model_final.pth" 
   BACKBONE:
     CONV_BODY: "R-101-FPN" 
   RESNETS:
@@ -14,13 +14,15 @@ MODEL:
     FPN_POST_NMS_TOP_N_TEST: 1000
   ROI_HEADS:
     USE_FPN: True
+    SCORE_THRESH: 0.5 # for running detection to collected boxes, for eval, should be 0.05
+    NMS: 0.65
   ROI_BOX_HEAD:
     POOLER_RESOLUTION: 7
     POOLER_SCALES: (0.25, 0.125, 0.0625, 0.03125)
     POOLER_SAMPLING_RATIO: 2
     FEATURE_EXTRACTOR: "FPN2MLPFeatureExtractor"
     PREDICTOR: "FPNPredictor"
-    NUM_CLASSES: 9 #81
+    NUM_CLASSES: 11
   ROI_MASK_HEAD:
     POOLER_SCALES: (0.25, 0.125, 0.0625, 0.03125)
     FEATURE_EXTRACTOR: "MaskRCNNFPNFeatureExtractor"
@@ -29,21 +31,24 @@ MODEL:
     POOLER_SAMPLING_RATIO: 2
     RESOLUTION: 28
     SHARE_BOX_FEATURE_EXTRACTOR: False
-  MASK_ON: True
+  MASK_ON: False
 DATASETS:
-  TRAIN: ("cityscapes_fine_instanceonly_seg_train_cocostyle",)
-  TEST: ("cityscapes_fine_instanceonly_seg_val_cocostyle",)
+  TRAIN: ("bdd100k_det_train_cocostyle",)
+  TEST: ("a3d_coco_all",)
   CONVERT: False #True
 DATALOADER:
   SIZE_DIVISIBILITY: 32
-  NUM_WORKERS: 0
+  NUM_WORKERS: 12
+  ASPECT_RATIO_GROUPING: False
 SOLVER:
+  IMS_PER_BATCH: 6
   BASE_LR: 0.0075 #0.02
   WEIGHT_DECAY: 0.0001
   STEPS: (60000, 80000)
-  MAX_ITER: 720000
+  MAX_ITER: 100000
 TEST:
-  IMS_PER_BATCH: 1
+  IMS_PER_BATCH: 16 #84 #36
 INPUT:
-  MIN_SIZE_TEST: 1024
-  MAX_SIZE_TEST: 2048
+  MIN_SIZE_TEST: 720
+  MAX_SIZE_TEST: 1280
+OUTPUT_DIR: '/u/bryao/work/DATA/A3D_2.0/detection'

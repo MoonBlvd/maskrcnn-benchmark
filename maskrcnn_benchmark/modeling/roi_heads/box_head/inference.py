@@ -7,7 +7,7 @@ from maskrcnn_benchmark.structures.bounding_box import BoxList
 from maskrcnn_benchmark.structures.boxlist_ops import boxlist_nms
 from maskrcnn_benchmark.structures.boxlist_ops import cat_boxlist
 from maskrcnn_benchmark.modeling.box_coder import BoxCoder
-
+import pdb
 
 class PostProcessor(nn.Module):
     """
@@ -154,6 +154,10 @@ class PostProcessor(nn.Module):
         
         # print("keep index after nms: ", keep_inds)
         result = cat_boxlist(result)
+        
+        # NOTE: Nov 20, add a cross-class nms to further get rid of bad detections.
+        result, keep_inds = boxlist_nms(result, 0.8, return_idx=True)
+        
         number_of_detections = len(result)
 
         # Limit to max_per_image detections **over all classes**
