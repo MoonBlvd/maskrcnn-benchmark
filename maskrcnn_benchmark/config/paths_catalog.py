@@ -2,10 +2,10 @@
 """Centralized catalog of paths."""
 
 import os
-
+import pdb
 
 class DatasetCatalog(object):
-    DATA_DIR = "/home/data/vision7/"#"/home/brianyao/Documents/maskrcnn-benchmark/maskrcnn_benchmark/data/datasets"
+    DATA_DIR = "data"#"/home/brianyao/Documents/maskrcnn-benchmark/maskrcnn_benchmark/data/datasets"
     DATASETS = {
         "coco_2017_train": {
             "img_dir": "coco/train2017",
@@ -122,11 +122,22 @@ class DatasetCatalog(object):
             "ann_file": "A3D_2.0/labels/*",
             "split_file": "A3D_2.0/all_split.txt"
         },
+        "bdd100k_dota":{
+            "root": "BDD100K_plus_DoTA",
+        }
     }
 
     @staticmethod
     def get(name):
-        if "coco" in name:
+        if name == 'bdd100k_dota':
+            factory = "BDD100KPlusDoTA"
+            data_dir = DatasetCatalog.DATA_DIR
+            attrs = DatasetCatalog.DATASETS[name]
+            args = dict(
+                root=os.path.join(data_dir, attrs["root"])
+            )
+            return dict(factory=factory, args=args)
+        elif "coco" in name:
             data_dir = DatasetCatalog.DATA_DIR
             attrs = DatasetCatalog.DATASETS[name]
             args = dict(
@@ -161,7 +172,8 @@ class DatasetCatalog(object):
                 factory="PascalVOCDataset",
                 args=args,
             )
-        raise RuntimeError("Dataset not available: {}".format(name))
+        else:
+            raise RuntimeError("Dataset not available: {}".format(name))
 
 
 class ModelCatalog(object):

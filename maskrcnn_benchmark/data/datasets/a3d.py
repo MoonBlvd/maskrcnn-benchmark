@@ -59,12 +59,11 @@ class A3DDataset(Dataset):
     ):
         self.root = root
         super(A3DDataset, self).__init__()
+        self.all_labels = []
         # sort indices for reproducible results
         self.all_anno_files = sorted(glob.glob(ann_file))
         with open(split_file, 'r') as f:
             self.split_video_names = f.read().splitlines()
-        
-        self.all_labels = []
         for anno_file in self.all_anno_files:
             video_name = anno_file.split('/')[-1].split('.')[0]
             if video_name in self.split_video_names:
@@ -77,9 +76,19 @@ class A3DDataset(Dataset):
                     if os.path.exists(save_dir):
                         continue
                     self.all_labels.append([video_name, anno])
+        '''
+        all_images = sorted(glob.glob(os.path.join('data/DoTA_dataset/long001/*.jpg')))
+        for image_path in all_images:
+            anno = {'image_path': image_path,
+                    'objects': [],
+                    'accident_id': 0,
+                    'frame_id': int(image_path.split('/')[-1][:-4])}
+            self.all_labels.append(['long001', anno])
+        '''
+
+
         self.transforms = transforms
         self.labels = list(A3DDataset.CLASSES.keys())
-        # pdb.set_trace()
 
     def __getitem__(self, idx):
         '''
@@ -88,13 +97,15 @@ class A3DDataset(Dataset):
             target: annotation of the bboxes on the last frame of imgs.
         '''
         video_name, anno = self.all_labels[idx]
-        # img_path = anno['image_path']
+        
         #NOTE: the img_path is wrong, need to fix
         img_path = ''
         for _dir in anno['image_path'].split('/')[-4:]:
             img_path = os.path.join(img_path, _dir)
         # load img
         img = Image.open(os.path.join(self.root, img_path)).convert('RGB')
+        
+        # img = Image.open(anno['image_path']).convert('RGB')
 
         bboxes = []
         classes = []

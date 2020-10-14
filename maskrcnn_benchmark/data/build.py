@@ -40,7 +40,8 @@ def build_dataset(dataset_list, transforms, dataset_catalog, is_train=True):
         if data["factory"] == "COCODataset" or \
             data["factory"] == "CityscapesDataset" or \
             data["factory"] == "BDD100KDataset" or \
-            data["factory"] == "A3DDataset":
+            data["factory"] == "A3DDataset" or \
+            data["factory"] == "BDD100KPlusDoTA":
             args["remove_images_without_annotations"] = is_train
         if data["factory"] == "PascalVOCDataset":
             args["use_difficult"] = not is_train

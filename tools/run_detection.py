@@ -174,6 +174,7 @@ def main():
         metavar="FILE",
         help="path to save detection results as numpy",
     )
+    parser.add_argument('--gpu', default='0', type=str)
     parser.add_argument("--local_rank", type=int, default=0)
     parser.add_argument(
         "opts",
@@ -188,7 +189,7 @@ def main():
 
     num_gpus = int(os.environ["WORLD_SIZE"]) if "WORLD_SIZE" in os.environ else 1
     distributed = num_gpus > 1
-
+    os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
     if distributed:
         torch.cuda.set_device(args.local_rank)
         torch.distributed.init_process_group(
@@ -201,7 +202,8 @@ def main():
     cfg.freeze()
 
     output_dir = cfg.OUTPUT_DIR
-
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
     logger = setup_logger("maskrcnn_benchmark", output_dir, get_rank())
     logger.info("Using {} GPUs".format(num_gpus))
     logger.info(cfg)

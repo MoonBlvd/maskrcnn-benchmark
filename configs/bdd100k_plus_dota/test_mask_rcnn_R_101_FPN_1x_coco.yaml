@@ -33,8 +33,9 @@ MODEL:
     SHARE_BOX_FEATURE_EXTRACTOR: False
   MASK_ON: False
 DATASETS:
+  ROOT: 'data/BDD100K_plus_DoTA' 
   TRAIN: ("bdd100k_det_train_cocostyle",)
-  TEST: ("a3d_coco_all",)
+  TEST: ("bdd100k_dota",)
   CONVERT: False #True
 DATALOADER:
   SIZE_DIVISIBILITY: 32
@@ -47,8 +48,8 @@ SOLVER:
   STEPS: (60000, 80000)
   MAX_ITER: 100000
 TEST:
-  IMS_PER_BATCH: 8 #84 #36
+  IMS_PER_BATCH: 12 #84 #36
 INPUT:
   MIN_SIZE_TEST: 720
   MAX_SIZE_TEST: 1280
-OUTPUT_DIR: /u/bryao/work/DATA/A3D_2.0/detection'
+OUTPUT_DIR: 'data/BDD100K_plus_DoTA/detection' 
